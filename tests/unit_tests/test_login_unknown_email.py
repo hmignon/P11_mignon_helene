@@ -1,7 +1,7 @@
 from server import app
 
 
-class TestLogin:
+class TestLoginUnknownEmail:
 
     client = app.test_client()
 
