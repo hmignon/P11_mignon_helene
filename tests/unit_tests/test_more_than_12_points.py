@@ -21,14 +21,22 @@ class TestMoreThanTwelvePoints:
         }
     ]
 
+    places_booked = [
+        {
+            "competition": "Test",
+            "booked": [5, "Test club"]
+        }
+    ]
+
     def setup_method(self):
         server.competitions = self.competition
         server.clubs = self.club
+        server.places_booked = self.places_booked
 
     def test_less_than_twelve(self):
         booked = 5
 
-        self.client.post(
+        result = self.client.post(
             "/purchasePlaces",
             data={
                 "places": booked,
@@ -37,12 +45,12 @@ class TestMoreThanTwelvePoints:
             }
         )
 
-        assert booked <= 12
+        assert result.status_code == 200
 
     def test_more_than_twelve_once(self):
         booked = 15
 
-        self.client.post(
+        result = self.client.post(
             "/purchasePlaces",
             data={
                 "places": booked,
@@ -51,23 +59,18 @@ class TestMoreThanTwelvePoints:
             }
         )
 
-        assert booked <= 12
+        assert result.status_code == 403
 
     def test_more_than_twelve_added(self):
-        places_bought = []
-        booked = 6
+        booked = 8
 
-        i = 0
-        while i <= 2:
-            self.client.post(
-                "/purchasePlaces",
-                data={
-                    "places": booked,
-                    "club": self.club[0]["name"],
-                    "competition": self.competition[0]["name"]
-                }
-            )
-            places_bought.append(booked)
-            i += 1
+        result = self.client.post(
+            "/purchasePlaces",
+            data={
+                "places": booked,
+                "club": self.club[0]["name"],
+                "competition": self.competition[0]["name"]
+            }
+        )
 
-            assert sum(places_bought) <= 12
+        assert result.status_code == 403
