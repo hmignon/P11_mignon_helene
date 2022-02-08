@@ -2,6 +2,9 @@ bin
 include
 lib
 .Python
-tests/
 .envrc
 __pycache__
+env/
+.idea/
+notes.txt
+/.pytest_cache/
