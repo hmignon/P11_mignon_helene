@@ -8,3 +8,4 @@ env/
 .idea/
 notes.txt
 .pytest_cache
+test_results/
