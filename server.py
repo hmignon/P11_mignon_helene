@@ -39,22 +39,27 @@ def show_summary():
 @app.route('/book/<competition>/<club>')
 def book(competition, club):
     found_club = [c for c in clubs if c['name'] == club][0]
-    found_competition = [c for c in competitions if c['name'] == competition][0]
-    if found_club and found_competition:
+
+    try:
+        found_competition = [c for c in competitions if c['name'] == competition][0]
+
         if datetime.strptime(found_competition['date'], '%Y-%m-%d %H:%M:%S') < datetime.now():
             flash("This competition is over.", 'error')
+            status_code = 400
+
         else:
             return render_template('booking.html', club=found_club, competition=found_competition)
 
-    else:
+    except IndexError:
         flash("Something went wrong-please try again", 'error')
+        status_code = 404
 
     return render_template(
         'welcome.html',
         club=found_club,
         past_competitions=past_competitions,
         present_competitions=present_competitions
-    ), 403
+    ), status_code
 
 
 @app.route('/purchasePlaces', methods=['POST'])
@@ -68,17 +73,17 @@ def purchase_places():
         if places_required > int(competition['numberOfPlaces']):
             flash('Not enough places available.', 'error')
 
-        elif places_required > int(club['points']):
-            flash('You don\'t have enough points.', 'error')
+        elif places_required * 3 > int(club['points']):
+            flash("You don't have enough points.", 'error')
 
         elif places_required > 12:
-            flash('You can\'t book more than 12 places in a competition.', 'error')
+            flash("You can't book more than 12 places in a competition.", 'error')
 
         else:
             try:
                 utils.update_booked_places(competition, club, places_booked, places_required)
                 competition['numberOfPlaces'] = int(competition['numberOfPlaces']) - places_required
-                club['points'] = int(club['points']) - places_required
+                club['points'] = int(club['points']) - (places_required * 3)
                 flash('Great-booking complete!', 'success')
 
                 return render_template(
@@ -94,11 +99,11 @@ def purchase_places():
     except ValueError:
         flash('Please enter a number between 0 and 12.', 'error')
 
-    return render_template('booking.html', club=club, competition=competition), 403
+    return render_template('booking.html', club=club, competition=competition), 400
 
 
-@app.route('/view-clubs')
-def view_clubs():
+@app.route('/viewClubPoints')
+def view_club_points():
     club_list = sorted(clubs, key=lambda club: club['name'])
     return render_template('club_points.html', clubs=club_list)
 

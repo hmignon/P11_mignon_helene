@@ -33,4 +33,4 @@ class LocustTestServer(HttpUser):
 
     @task
     def get_board(self):
-        self.client.get("/view-clubs")
+        self.client.get("/viewClubPoints")
