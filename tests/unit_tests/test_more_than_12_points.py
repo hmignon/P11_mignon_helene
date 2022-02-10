@@ -17,7 +17,7 @@ class TestMoreThanTwelvePoints:
         {
             "name": "Test club",
             "email": "test_club@email.com",
-            "points": "20"
+            "points": "60"
         }
     ]
 
@@ -46,9 +46,10 @@ class TestMoreThanTwelvePoints:
         )
 
         assert result.status_code == 200
+        assert "Great-booking complete!" in result.data.decode()
 
     def test_more_than_twelve_once(self):
-        booked = 15
+        booked = 13
 
         result = self.client.post(
             "/purchasePlaces",
@@ -59,7 +60,8 @@ class TestMoreThanTwelvePoints:
             }
         )
 
-        assert result.status_code == 403
+        assert result.status_code == 400
+        assert "more than 12 places in a competition." in result.data.decode()
 
     def test_more_than_twelve_added(self):
         booked = 8
@@ -73,4 +75,5 @@ class TestMoreThanTwelvePoints:
             }
         )
 
-        assert result.status_code == 403
+        assert result.status_code == 400
+        assert "more than 12 places in a competition." in result.data.decode()

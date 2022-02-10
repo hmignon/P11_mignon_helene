@@ -9,7 +9,7 @@ class TestOverbookCompetition:
         {
             "name": "Test",
             "date": "2020-03-27 10:00:00",
-            "numberOfPlaces": "10"
+            "numberOfPlaces": "5"
         }
     ]
 
@@ -17,7 +17,7 @@ class TestOverbookCompetition:
         {
             "name": "Test club",
             "email": "test_club@email.com",
-            "points": "15"
+            "points": "20"
         }
     ]
 
@@ -26,7 +26,7 @@ class TestOverbookCompetition:
         server.clubs = self.club
 
     def test_overbook_competition(self):
-        booked = 12
+        booked = 6
 
         result = self.client.post(
             "/purchasePlaces",
@@ -37,5 +37,6 @@ class TestOverbookCompetition:
             }
         )
 
-        assert result.status_code == 403
+        assert result.status_code == 400
+        assert "Not enough places available." in result.data.decode()
         assert int(self.competition[0]['numberOfPlaces']) >= 0

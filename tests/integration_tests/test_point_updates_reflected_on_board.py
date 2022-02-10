@@ -38,8 +38,8 @@ class TestPointsUpdate:
             }
         )
 
-        result = self.client.get("/view-clubs")
+        result = self.client.get("/viewClubPoints")
 
         assert result.status_code == 200
         assert f"<td>{self.club[0]['name']}</td>" in result.data.decode()
-        assert f"<td>{club_points_before - places_booked}</td>" in result.data.decode()
+        assert f"<td>{club_points_before - places_booked * 3}</td>" in result.data.decode()

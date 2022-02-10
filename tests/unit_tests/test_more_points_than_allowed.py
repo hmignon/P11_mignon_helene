@@ -26,7 +26,21 @@ class TestMorePointsThanAllowed:
         server.clubs = self.club
 
     def test_points_within_allowed(self):
-        self.client.post(
+        result = self.client.post(
+            "/purchasePlaces",
+            data={
+                "places": 3,
+                "club": self.club[0]["name"],
+                "competition": self.competition[0]["name"]
+            }
+        )
+
+        assert result.status_code == 200
+        assert "Great-booking complete!" in result.data.decode()
+        assert int(self.club[0]["points"]) >= 0
+
+    def test_more_points_than_allowed(self):
+        result = self.client.post(
             "/purchasePlaces",
             data={
                 "places": 5,
@@ -35,16 +49,6 @@ class TestMorePointsThanAllowed:
             }
         )
 
-        assert int(self.club[0]["points"]) >= 0
-
-    def test_more_points_than_allowed(self):
-        self.client.post(
-            "/purchasePlaces",
-            data={
-                "places": 100,
-                "club": self.club[0]["name"],
-                "competition": self.competition[0]["name"]
-            }
-        )
-
+        assert result.status_code == 400
+        assert "have enough points." in result.data.decode()
         assert int(self.club[0]["points"]) >= 0

@@ -34,10 +34,21 @@ class TestBookPastCompetition:
         result = self.client.get(
             f"/book/{self.competitions[0]['name']}/{self.club[0]['name']}"
         )
-        assert result.status_code == 403
+
+        assert result.status_code == 400
+        assert "This competition is over." in result.data.decode()
 
     def test_book_open_competition(self):
         result = self.client.get(
             f"/book/{self.competitions[1]['name']}/{self.club[0]['name']}"
         )
+
         assert result.status_code == 200
+
+    def test_book_non_existant_competition(self):
+        result = self.client.get(
+            f"/book/random_name/{self.club[0]['name']}"
+        )
+
+        assert result.status_code == 404
+        assert "Something went wrong-please try again" in result.data.decode()
