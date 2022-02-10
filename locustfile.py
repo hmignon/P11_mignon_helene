@@ -1,6 +1,6 @@
 from locust import HttpUser, task, between
 
-from server import load_clubs, load_competitions
+from utils import load_clubs, load_competitions
 
 
 class LocustTestServer(HttpUser):
@@ -30,3 +30,7 @@ class LocustTestServer(HttpUser):
             },
             name="/purchasePlaces"
         )
+
+    @task
+    def get_board(self):
+        self.client.get("/view-clubs")

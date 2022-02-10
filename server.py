@@ -33,7 +33,7 @@ def show_summary():
             flash("Please enter your email.", 'error')
         else:
             flash("No account related to this email.", 'error')
-        return render_template('index.html'), 403
+        return render_template('index.html'), 401
 
 
 @app.route('/book/<competition>/<club>')
@@ -51,7 +51,7 @@ def book(competition, club):
 
     return render_template(
         'welcome.html',
-        club=club,
+        club=found_club,
         past_competitions=past_competitions,
         present_competitions=present_competitions
     ), 403
@@ -97,7 +97,10 @@ def purchase_places():
     return render_template('booking.html', club=club, competition=competition), 403
 
 
-# TODO: Add route for points display
+@app.route('/view-clubs')
+def view_clubs():
+    club_list = sorted(clubs, key=lambda club: club['name'])
+    return render_template('club_points.html', clubs=club_list)
 
 
 @app.route('/logout')
