@@ -10,6 +10,7 @@ class TestLoginUnknownEmail:
         result = self.client.post("/showSummary", data={"email": server.clubs[0]["email"]})
 
         assert result.status_code == 200
+        assert f"{server.clubs[0]['email']}" in result.data.decode()
 
     def test_invalid_email(self):
         result = self.client.post("/showSummary", data={"email": "jhbdfkshdvf"})

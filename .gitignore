@@ -9,3 +9,4 @@ env/
 notes.txt
 .pytest_cache
 test_results/
+/.coverage

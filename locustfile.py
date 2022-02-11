@@ -9,14 +9,14 @@ class LocustTestServer(HttpUser):
     club = load_clubs()[0]
 
     def on_start(self):
-        self.client.get("/")
-        self.client.post("/showSummary", data={'email': self.club["email"]}, name="/showSummary")
+        self.client.get("/", name=".index")
+        self.client.post("/showSummary", data={'email': self.club["email"]}, name=".show_summary")
 
     @task
     def get_booking(self):
         self.client.get(
             f"/book/{self.competition['name']}/{self.club['name']}",
-            name="/book/..."
+            name="book"
         )
 
     @task
@@ -28,9 +28,9 @@ class LocustTestServer(HttpUser):
                 "club": self.club["name"],
                 "competition": self.competition["name"]
             },
-            name="/purchasePlaces"
+            name="purchase_places"
         )
 
     @task
     def get_board(self):
-        self.client.get("/viewClubPoints")
+        self.client.get("/viewClubPoints", name="view_club_points")

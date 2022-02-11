@@ -40,3 +40,19 @@ class TestOverbookCompetition:
         assert result.status_code == 400
         assert "Not enough places available." in result.data.decode()
         assert int(self.competition[0]['numberOfPlaces']) >= 0
+
+    def test_book_within_availability(self):
+        booked = 1
+
+        result = self.client.post(
+            "/purchasePlaces",
+            data={
+                "places": booked,
+                "club": self.club[0]["name"],
+                "competition": self.competition[0]["name"]
+            }
+        )
+
+        assert result.status_code == 200
+        assert "Great-booking complete!" in result.data.decode()
+        assert int(self.competition[0]['numberOfPlaces']) >= 0
