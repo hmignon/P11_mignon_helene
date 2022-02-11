@@ -3,7 +3,6 @@ from server import app
 
 
 class TestMoreThanTwelvePoints:
-
     client = app.test_client()
     competition = [
         {

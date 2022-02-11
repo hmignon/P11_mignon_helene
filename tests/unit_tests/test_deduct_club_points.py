@@ -3,7 +3,6 @@ from server import app
 
 
 class TestDeductClubPoints:
-
     client = app.test_client()
     competition = [
         {
