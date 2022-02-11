@@ -2,15 +2,22 @@ from datetime import datetime
 
 from flask import Flask, render_template, request, redirect, flash, url_for
 
-import utils
+from utils import (
+    load_clubs,
+    load_competitions,
+    sort_competitions_date,
+    initialize_booked_places,
+    update_booked_places
+)
+
 
 app = Flask(__name__)
 app.secret_key = 'something_special'
 
-competitions = utils.load_competitions()
-clubs = utils.load_clubs()
-past_competitions, present_competitions = utils.sort_competitions_date(competitions)
-places_booked = utils.initialize_booked_places(competitions, clubs)
+competitions = load_competitions()
+clubs = load_clubs()
+past_competitions, present_competitions = sort_competitions_date(competitions)
+places_booked = initialize_booked_places(competitions, clubs)
 
 
 @app.route('/')
@@ -81,7 +88,7 @@ def purchase_places():
 
         else:
             try:
-                utils.update_booked_places(competition, club, places_booked, places_required)
+                update_booked_places(competition, club, places_booked, places_required)
                 competition['numberOfPlaces'] = int(competition['numberOfPlaces']) - places_required
                 club['points'] = int(club['points']) - (places_required * 3)
                 flash('Great-booking complete!', 'success')
