@@ -1,51 +1,90 @@
-# gudlift-registration
+# Projet 11 DA-Python OC (Hélène Mignon)
+***Livrable du Projet 11 du parcours D-A Python d'OpenClassrooms***
 
-1. Why
+Plateforme de réservation de places à des compétitions de force pour l'entreprise Güdlft.
+
+L'objectif du projet est de corriger les erreurs et bugs présents dans le projet 
+[Python_Testing](https://github.com/OpenClassrooms-Student-Center/Python_Testing), 
+ainsi que d'implémenter de nouvelles fonctionnalités. Chaque correction / ajout se trouve sur sa propre branche, 
+et est supporté(e) par une suite de tests via Pytest et Locust.
+
+_Windows 10 - Python 3.9.5 - Flask 1.1.2_
+
+## Initialisation du projet
+
+### Windows :
+```
+git clone https://github.com/hmignon/P11_mignon_helene.git
+
+cd P11_mignon_helene 
+python -m venv env 
+env\Scripts\activate
+
+pip install -r requirements.txt
+```
+
+### MacOS et Linux :
+```
+git clone https://github.com/hmignon/P11_mignon_helene.git
+
+cd P11_mignon_helene 
+python3 -m venv env 
+source env/bin/activate
+
+pip install -r requirements.txt
+```
 
 
-    This is a proof of concept (POC) project to show a light-weight version of our competition booking platform. The aim is the keep things as light as possible, and use feedback from the users to iterate.
+## Utilisation
 
-2. Getting Started
+1. Lancer le serveur Flask :
 
-    This project uses the following technologies:
+```
+$env:FLASK_APP = "server.py"
+flask run
+```
 
-    * Python v3.x+
-
-    * [Flask](https://flask.palletsprojects.com/en/1.1.x/)
-
-        Whereas Django does a lot of things for us out of the box, Flask allows us to add only what we need. 
-     
-
-    * [Virtual environment](https://virtualenv.pypa.io/en/stable/installation.html)
-
-        This ensures you'll be able to install the correct packages without interfering with Python on your machine.
-
-        Before you begin, please ensure you have this installed globally. 
+2. Pour accéder au site, se rendre sur l'adresse par défaut : [http://127.0.0.1:5000/](http://127.0.0.1:5000/)
 
 
-3. Installation
 
-    - After cloning, change into the directory and type <code>virtualenv .</code>. This will then set up a a virtual python environment within that directory.
+## Tests
 
-    - Next, type <code>source bin/activate</code>. You should see that your command prompt has changed to the name of the folder. This means that you can install packages in here without affecting affecting files outside. To deactivate, type <code>deactivate</code>
+**Note : Tous les packages nécessaires à l'exécution de ces tests sont inclus dans 'requirements.txt'.**
 
-    - Rather than hunting around for the packages you need, you can install in one step. Type <code>pip install -r requirements.txt</code>. This will install all the packages listed in the respective file. If you install a package, make sure others know by updating the requirements.txt file. An easy way to do this is <code>pip freeze > requirements.txt</code>
+### Tests unitaires / tests d'intégration
 
-    - Flask requires that you set an environmental variable to the python file. However you do that, you'll want to set the file to be <code>server.py</code>. Check [here](https://flask.palletsprojects.com/en/1.1.x/quickstart/#a-minimal-application) for more details
+Les tests unitaires et d'intégration sont exécutés grâce à [Pytest](https://docs.pytest.org/en/6.2.x/index.html) (version 6.2.5).
 
-    - You should now be ready to test the application. In the directory, type either <code>flask run</code> or <code>python -m flask run</code>. The app should respond with an address you should be able to go to using your browser.
+Pour effectuer l'ensemble des tests unitaires et d'intégration, entrer la commande :
+```
+pytest tests
+```
+Le module [Coverage](https://coverage.readthedocs.io/en/6.3.1/) (version 6.3.1) est utilisé pour le rapport de couverture des tests.
+Il se fait via la commande :
+```
+coverage run -m pytest tests
+coverage report
+```
 
-4. Current Setup
+### Test de performances
 
-    The app is powered by [JSON files](https://www.tutorialspoint.com/json/json_quick_guide.htm). This is to get around having a DB until we actually need one. The main ones are:
-     
-    * competitions.json - list of competitions
-    * clubs.json - list of clubs with relevant information. You can look here to see what email addresses the app will accept for login.
+Il est possible d'effectuer un test de performance grâce au module [Locust](https://locust.io) (version 2.7.2).
+Pour lancer le serveur de test, entrer la commande :
 
-5. Testing
+```
+locust tests/performance_tests/locustfile.py 
+```
 
-    You are free to use whatever testing framework you like-the main thing is that you can show what tests you are using.
+Se rendre sur l'adresse [http://localhost:8089](http://localhost:8089), entrez les options souhaitées, avec pour 'host' l'adresse par défaut du site (http://127.0.0.1:5000/).
 
-    We also like to show how well we're testing, so there's a module called 
-    [coverage](https://coverage.readthedocs.io/en/coverage-5.1/) you should add to your project.
 
+### Rapports
+
+Les captures d'écran des derniers rapports de tests sont disponibles dans le dossier 'reports'.
+
+- [Rapport pytest](reports/pytest_all_tests_passed.png) (tous les tests réussis)
+
+- [Rapport de couverture](reports/coverage_report.png) (100% de couverture)
+
+- [Rapport de performance locust](reports/locust_report.png) (6 utilisateurs, 1 par seconde)
