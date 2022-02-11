@@ -50,7 +50,7 @@ flask run
 
 ## Tests
 
-**Note : Tous les packages nécessaires à l'exécution de ces tests sont inclus dans 'requirements.txt'.**
+- **Note : Tous les packages nécessaires à l'exécution de ces tests sont inclus dans 'requirements.txt'.**
 
 ### Tests unitaires / tests d'intégration
 
@@ -61,7 +61,7 @@ Pour effectuer l'ensemble des tests unitaires et d'intégration, entrer la comma
 pytest tests
 ```
 Le module [Coverage](https://coverage.readthedocs.io/en/6.3.1/) (version 6.3.1) est utilisé pour le rapport de couverture des tests.
-Il se fait via la commande :
+Il s'exécute via la commande :
 ```
 coverage run -m pytest tests
 coverage report
@@ -76,7 +76,7 @@ Pour lancer le serveur de test, entrer la commande :
 locust tests/performance_tests/locustfile.py 
 ```
 
-Se rendre sur l'adresse [http://localhost:8089](http://localhost:8089), entrez les options souhaitées, avec pour 'host' l'adresse par défaut du site (http://127.0.0.1:5000/).
+Se rendre sur l'adresse [http://localhost:8089](http://localhost:8089) et entrer les options souhaitées, avec pour 'host' l'adresse par défaut du site (http://127.0.0.1:5000/).
 
 
 ### Rapports
@@ -87,4 +87,4 @@ Les captures d'écran des derniers rapports de tests sont disponibles dans le do
 
 - [Rapport de couverture](reports/coverage_report.png) (100% de couverture)
 
-- [Rapport de performance locust](reports/locust_report.png) (6 utilisateurs, 1 par seconde)
+- [Rapport de performances locust](reports/locust_report.png) (6 utilisateurs, 1 par seconde)
